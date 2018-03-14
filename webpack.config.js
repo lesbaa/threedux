@@ -36,6 +36,7 @@ module.exports = {
           options: {
             presets: [
               '@babel/stage-0',
+              '@babel/stage-3',
             ],
             plugins: [
               require('@babel/plugin-transform-runtime'),
