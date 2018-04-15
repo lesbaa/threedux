@@ -5,7 +5,7 @@ import {
 import threeConnect from '../src/three-connect'
 
 const initState = {
-  rotation: 0.0,
+  value: 0.0,
 }
 
 function cubeReducer(state = initState, action) {
@@ -16,12 +16,12 @@ function cubeReducer(state = initState, action) {
   switch(type) {
     case 'INCREMENT': {
       return {
-        rotation: state.rotation += 0.1,
+        value: state.value += 0.1,
       }
     }
     case 'DECREMENT': {
       return {
-        rotation: state.rotation -= 0.1,
+        value: state.value -= 0.1,
       }
     }
     default: {

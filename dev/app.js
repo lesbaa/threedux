@@ -15,6 +15,12 @@ import {
   bindActionCreators,
   compose,
 } from 'redux'
+import withTransition from '../src/modules/with-transition'
+import {
+  StyleClass
+} from '../src/three-dom'
+import withStateTransition from '../src/with-state-transition'
+
 
 const incrementAction = () => ({
   type: 'INCREMENT',
@@ -22,6 +28,10 @@ const incrementAction = () => ({
 
 const decrementAction = () => ({
   type: 'DECREMENT',
+})
+
+const withRotationTransition = withStateTransition({
+  tickCallback: (o) => { o.rotation.x += 0.01 },
 })
 
 class App {
@@ -50,11 +60,11 @@ class App {
     )
 
     this.camera.position.z = 5
-    this.loop(0)
 
     const connectToRedux = connect(
       mapStateToObj3D,
       mapDispatchToObj3D,
+      withRotationTransition,      
     )
   
     const makeEventful = withEvents({
@@ -100,7 +110,46 @@ class App {
     this.scene.add(decrement)
 
     this.mesh = enhance(this.mesh)
+
     this.scene.add(this.mesh)
+
+    this.style = new StyleClass({
+      color: {
+        r: Math.random() * 3,
+        g: Math.random() * 3,
+        b: Math.random() * 3,
+      },
+      position: {
+        x: Math.random() * 3,
+        y: Math.random() * 3,
+        z: Math.random() * 3,
+      },
+    })
+
+    this.mesh.classList.add(
+      new StyleClass({
+        transition: {
+          transitionProperties: [
+            'color',
+            'position',
+          ],
+          transitionEasingFunction: 'linear',
+          transitionDuration: 1000,
+        },
+        color: {
+          r: 1.0,
+          g: 0.0,
+          b: 1.0,
+        },
+        position: {
+          x: 0,
+          y: 1,
+          z: 0,
+        },
+      })
+    )
+    window.m = this.mesh
+    this.loop(0)    
   }
 
   initStats = () => {
@@ -112,7 +161,7 @@ class App {
   }
 
   handleButtonClick = () => {
-    store.dispatch({ payload: 1, type:'INCREMENT' })
+    this.mesh.classList.toggle(this.style)
   }
 
   addLights = () => {
@@ -126,7 +175,7 @@ class App {
   }
 
   loop = (t) => {
-    // this.mesh.rotation.x += 0.01
+    this.mesh.tick()
     // this.mesh.rotation.y += 0.01
     this.camera.position.x = Math.sin(t / 2000)
     this.camera.position.y = Math.cos(t / 2000)
@@ -159,13 +208,13 @@ function applyCubeMap(scene, cubeMapUrl) {
 }
 
 function mapStateToObj3D ({
-  rotation,
+  value,
 }) {
   return {
     rotation: {
-      x: rotation,
-      y: rotation,
-      z: rotation,
+      x: value,
+      y: value,
+      z: value,
     },
   }
 }

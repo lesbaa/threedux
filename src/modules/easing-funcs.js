@@ -4,10 +4,6 @@
 */
 // no easing, no acceleration
 
-import * as TWEEN from '@tweenjs/tween.js'
-
-window.ease = TWEEN.Easing
-
 export const linear = t => t
 
 export const easeInQuad = t => t*t

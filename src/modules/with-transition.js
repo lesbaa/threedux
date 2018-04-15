@@ -31,7 +31,6 @@ const withTransition = ({
   from = {},
   easingFunction = 'linear',
   initAtFromPosition = true,
-  numSteps = null,
   debug = false,
   primer = null,
   tickCallback = null,
@@ -111,7 +110,7 @@ function tick() {
   }
 
   if (this.state.isActive !== this.oldState.isActive) {
-      this.tween.handleStateChange()
+    this.tween.handleStateChange()
   }
 
   if (this.tickCallback) {
@@ -141,7 +140,7 @@ function update() {
     alpha,
     from: this.tween.currentState,
     to: this.tween.targetState,
-    debug: this.debug
+    debug: this.debug,
   })
 
   applyStateToObj3d({
@@ -170,8 +169,8 @@ function handleStateChange() {
   
   this.tween.targetState = clone3DAttr(
     this.state.isActive
-    ? this.tween.activeState
-    : this.tween.restingState
+      ? this.tween.activeState
+      : this.tween.restingState
   )
 
   if (this.tween.delay) {
@@ -181,7 +180,7 @@ function handleStateChange() {
         
         this.tween.shouldTransition = true
         if (this.isEventful) {
-            this.dispatchEvent({
+          this.dispatchEvent({
             type: 'transitionStart',
             target: this,
           })
