@@ -1,3 +1,4 @@
+/* eslint-disable no-inner-declarations */
 import {
   Vector2,
   Raycaster,
@@ -14,6 +15,7 @@ const withEvents = ({
   camera,
   scene,
 }) => obj => {
+  const obj3D = obj.clone()
   if (!canvas.isEventful) {
     const vMousePos = new Vector2()
     const raycaster = new Raycaster()
@@ -34,7 +36,7 @@ const withEvents = ({
 
     function handleCanvasMouseMove({
       clientX,
-      clientY
+      clientY,
     }) {
       vMousePos.x = (clientX / window.innerWidth) * 2 - 1
       vMousePos.y = (clientY / window.innerHeight) * 2 - 1
@@ -61,7 +63,7 @@ const withEvents = ({
 
     function handleCanvasClick({
       clientX,
-      clientY
+      clientY,
     }) {
       vMousePos.x = (clientX / window.innerWidth) * 2 - 1
       vMousePos.y = (clientY / window.innerHeight) * 2 - 1
@@ -73,7 +75,6 @@ const withEvents = ({
           target,
         })
       }
-      // console.log('click', intersect)
     }
 
     function getIntersectObject(vec, cam) {
@@ -83,11 +84,8 @@ const withEvents = ({
     }
   }
 
-  return obj
+  return obj3D
 }
 
-function getMouseEventType (target) {
-
-}
 
 export default withEvents

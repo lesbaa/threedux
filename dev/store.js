@@ -1,13 +1,11 @@
 import {
   createStore,
+  compose,
 } from 'redux'
+import threeConnect from '../src/three-connect'
 
 const initState = {
-  rotation: {
-    x: 0,
-    y: 0,
-    z: 0,
-  },
+  rotation: 0.0,
 }
 
 function cubeReducer(state = initState, action) {
@@ -18,11 +16,7 @@ function cubeReducer(state = initState, action) {
   switch(type) {
     case 'TURN': {
       return {
-        rotation: {
-          x: 1,
-          y: 1,
-          z: 1,
-        },
+        rotation: state.rotation += 0.1,
       }
     }
     default: {
@@ -31,7 +25,14 @@ function cubeReducer(state = initState, action) {
   }
 }
 
-export default createStore(
+const store = createStore(
   cubeReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
+
+store.subscribe(console.log)
+store.dispatch({ payload: 1, type:'TURN' })
+
+export const connect = threeConnect(store)
+
+export default store

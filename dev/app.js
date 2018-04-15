@@ -7,9 +7,21 @@ import {
   Vector3,
   Mesh,
 } from 'three'
-import store from './store'
+import store, { connect } from './store'
 import setUpThree from '../src/modules/set-up-three.js'
+import withEvents from '../src/modules/with-events'
 import Stats from '../src/modules/stats'
+import {
+  bindActionCreators,
+  compose,
+} from 'redux'
+
+const turnAction = () => ({
+  type: 'TURN',
+  payload: {
+    fod: 1,
+  },
+})
 
 class App {
   constructor() {
@@ -21,10 +33,11 @@ class App {
     this.renderer = renderer
     this.camera = camera
     this.scene = scene
-    this.init()
   }
 
   init = () => {
+    const button = document.querySelector('button')
+    button.addEventListener('click', this.handleButtonClick)
     this.scene = applyCubeMap(this.scene, './assets/cube-map.png')
     this.initStats()
     this.addLights()
@@ -34,9 +47,27 @@ class App {
         color: 0xffffff,
       })
     )
-    this.scene.add(this.mesh)
     this.camera.position.z = 5
     this.loop(0)
+    const connectToRedux = connect(
+      mapStateToObj3D,
+      mapDispatchToObj3D,
+    )
+  
+    const enhance = compose(
+      connectToRedux,
+      withEvents({
+        canvas: this.renderer.domElement,
+        camera: this.camera,
+        scene: this.scene,
+      }),
+    )
+
+    this.mesh = enhance(this.mesh)
+    this.mesh.addEventListener('click', ({ target }) => {
+      target.actions.turnAction()
+    })
+    this.scene.add(this.mesh)
   }
 
   initStats = () => {
@@ -45,6 +76,10 @@ class App {
     document.body.appendChild(
       document.createElement('div').appendChild(this.stats.dom)
     )
+  }
+
+  handleButtonClick = () => {
+    store.dispatch({ payload: 1, type:'TURN' })
   }
 
   addLights = () => {
@@ -58,8 +93,8 @@ class App {
   }
 
   loop = (t) => {
-    this.mesh.rotation.x += 0.01
-    this.mesh.rotation.y += 0.01
+    // this.mesh.rotation.x += 0.01
+    // this.mesh.rotation.y += 0.01
     this.camera.position.x = Math.sin(t / 2000) * 5
     this.camera.position.z = Math.cos(t / 2000) * 5
     this.camera.position.y = Math.cos(t / 2000)
@@ -72,6 +107,7 @@ class App {
 
 
 const app = new App()
+app.init()
 
 function applyCubeMap(scene, cubeMapUrl) {
   const cubeTexture = new CubeTextureLoader().load(
@@ -89,3 +125,22 @@ function applyCubeMap(scene, cubeMapUrl) {
 
   return scene
 }
+
+function mapStateToObj3D ({
+  rotation,
+}) {
+  return {
+    rotation: {
+      x: rotation,
+      y: rotation,
+      z: rotation,
+    },
+  }
+}
+
+function mapDispatchToObj3D (dispatch) {
+  return bindActionCreators({
+    turnAction,
+  }, dispatch)
+}
+
