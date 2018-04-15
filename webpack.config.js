@@ -5,18 +5,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
-  entry: './app/app.js',
+  entry: './dev/app.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'app.bundle.js',
+    filename: 'dev.app.bundle.js',
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './app/template.html',
+      template: './dev/template.html',
     }),
     new CopyWebpackPlugin([
       {
-        from: './app/assets',
+        from: './dev/assets',
         to: 'assets',
       },
     ]),
