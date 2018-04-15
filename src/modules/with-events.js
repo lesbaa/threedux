@@ -39,7 +39,7 @@ const withEvents = ({
       clientY,
     }) {
       vMousePos.x = (clientX / window.innerWidth) * 2 - 1
-      vMousePos.y = (clientY / window.innerHeight) * 2 - 1
+      vMousePos.y = ((window.innerHeight - clientY) / window.innerHeight) * 2 - 1
 
       const target = getIntersectObject(vMousePos, camera)
 
@@ -66,9 +66,9 @@ const withEvents = ({
       clientY,
     }) {
       vMousePos.x = (clientX / window.innerWidth) * 2 - 1
-      vMousePos.y = (clientY / window.innerHeight) * 2 - 1
+      vMousePos.y = ((window.innerHeight - clientY) / window.innerHeight) * 2 - 1
       const target = getIntersectObject(vMousePos, camera)
-
+      console.log(target)
       if (target) {
         target.dispatchEvent({
           type: 'click',

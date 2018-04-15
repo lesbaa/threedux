@@ -14,9 +14,14 @@ function cubeReducer(state = initState, action) {
     type,
   } = action
   switch(type) {
-    case 'TURN': {
+    case 'INCREMENT': {
       return {
         rotation: state.rotation += 0.1,
+      }
+    }
+    case 'DECREMENT': {
+      return {
+        rotation: state.rotation -= 0.1,
       }
     }
     default: {
@@ -29,9 +34,6 @@ const store = createStore(
   cubeReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
-
-store.subscribe(console.log)
-store.dispatch({ payload: 1, type:'TURN' })
 
 export const connect = threeConnect(store)
 

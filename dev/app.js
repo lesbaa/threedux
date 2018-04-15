@@ -16,11 +16,12 @@ import {
   compose,
 } from 'redux'
 
-const turnAction = () => ({
-  type: 'TURN',
-  payload: {
-    fod: 1,
-  },
+const incrementAction = () => ({
+  type: 'INCREMENT',
+})
+
+const decrementAction = () => ({
+  type: 'DECREMENT',
 })
 
 class App {
@@ -47,26 +48,58 @@ class App {
         color: 0xffffff,
       })
     )
+
     this.camera.position.z = 5
     this.loop(0)
+
     const connectToRedux = connect(
       mapStateToObj3D,
       mapDispatchToObj3D,
     )
   
+    const makeEventful = withEvents({
+      canvas: this.renderer.domElement,
+      camera: this.camera,
+      scene: this.scene,
+    })
+
     const enhance = compose(
       connectToRedux,
-      withEvents({
-        canvas: this.renderer.domElement,
-        camera: this.camera,
-        scene: this.scene,
-      }),
+      makeEventful,
+    )
+    
+    const increment = enhance(new Mesh(
+      new CubeGeometry(0.5,0.5,0.5),
+      new MeshStandardMaterial({
+        color: 0xff5555,
+      }))
     )
 
-    this.mesh = enhance(this.mesh)
-    this.mesh.addEventListener('click', ({ target }) => {
-      target.actions.turnAction()
+    increment.position.x = 1
+    increment.position.y = -1
+
+    const decrement = enhance(new Mesh(
+      new CubeGeometry(0.5,0.5,0.5),
+      new MeshStandardMaterial({
+        color: 0x5555ff,
+      }))
+    )
+
+    decrement.position.x = -1
+    decrement.position.y = -1
+
+    increment.addEventListener('click', ({ target }) => {
+      target.actions.incrementAction()
     })
+
+    decrement.addEventListener('click', ({ target }) => {
+      target.actions.decrementAction()
+    })
+
+    this.scene.add(increment)
+    this.scene.add(decrement)
+
+    this.mesh = enhance(this.mesh)
     this.scene.add(this.mesh)
   }
 
@@ -79,7 +112,7 @@ class App {
   }
 
   handleButtonClick = () => {
-    store.dispatch({ payload: 1, type:'TURN' })
+    store.dispatch({ payload: 1, type:'INCREMENT' })
   }
 
   addLights = () => {
@@ -95,8 +128,7 @@ class App {
   loop = (t) => {
     // this.mesh.rotation.x += 0.01
     // this.mesh.rotation.y += 0.01
-    this.camera.position.x = Math.sin(t / 2000) * 5
-    this.camera.position.z = Math.cos(t / 2000) * 5
+    this.camera.position.x = Math.sin(t / 2000)
     this.camera.position.y = Math.cos(t / 2000)
     this.camera.lookAt(new Vector3(0,0,0))
     this.renderer.render(this.scene, this.camera)
@@ -140,7 +172,8 @@ function mapStateToObj3D ({
 
 function mapDispatchToObj3D (dispatch) {
   return bindActionCreators({
-    turnAction,
+    incrementAction,
+    decrementAction,
   }, dispatch)
 }
 
