@@ -7,9 +7,7 @@ import {
   Vector3,
   Mesh,
 } from 'three'
-import {
-  createStore,
-} from 'redux'
+import store from './store'
 import setUpThree from '../src/modules/set-up-three.js'
 import Stats from '../src/modules/stats'
 
