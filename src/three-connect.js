@@ -2,11 +2,6 @@ import apply from '../src/modules/apply-state-to-obj3d'
 import clone3DAttributes from './modules/clone-3d-attributes'
 import withThreedom from './with-threedom'
 
-import {
-  StyleClassList,
-  StyleClass,
-} from './StyleClassList'
-
 const threeConnect = (
   store,
   applyFunc = apply,

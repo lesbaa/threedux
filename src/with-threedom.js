@@ -7,7 +7,7 @@ import clone3DAttributes from './modules/clone-3d-attributes'
 import applyStateToObj3d from './modules/apply-state-to-obj3d'
 import tweenState from './modules/tween-state'
 import {
-  StyleClassList,
+  Style3DList,
 } from './StyleClassList'
 
 const clone3DAttr = clone3DAttributes([
@@ -28,7 +28,7 @@ const withThreedom = inputObj => {
   
   subject.handleClassListChange = handleClassListChange.bind(subject)
   subject.handleStateChange = handleStateChange.bind(subject) 
-  subject.classList = new StyleClassList(subject.handleClassListChange, clone3DAttr(subject))
+  subject.classList = new Style3DList(subject.handleClassListChange, clone3DAttr(subject))
   
   subject.getComputedStyle = () => subject.classList.computedStyle
   

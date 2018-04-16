@@ -157,7 +157,13 @@ class App {
   }
 
   handleButtonClick = () => {
-    this.mesh.classList.toggle(this.style)
+    this.style.update({
+      color: {
+        r: 1,
+        g: 0.5,
+        b: 0,
+      },
+    })
   }
 
   addLights = () => {

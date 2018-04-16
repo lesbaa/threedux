@@ -1,4 +1,4 @@
-export class StyleClassList {
+export class Style3DList {
   // TODO add getter for the classList
   constructor(onUpdate, defaultStyle = {}, classList = []) {
     this.classList = classList
@@ -53,6 +53,7 @@ export class StyleClassList {
   computedStyle = {}
 }
 
+// Class seems needless here, unless for instancing?
 export class Style3D {
   constructor(properties) {
     this.props = {
