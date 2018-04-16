@@ -26,95 +26,37 @@ const withStateTransition = ({
 }) => inputObj => {
   const subject = inputObj.clone()
   
+  subject.handleClassListChange = handleClassListChange.bind(subject)
   subject.handleStateChange = handleStateChange.bind(subject)
-  subject.classList = new StyleClassList(subject.handleStateChange, clone3DAttr(subject))
+  subject.classList = new StyleClassList(subject.handleClassListChange, clone3DAttr(subject))
+  
   subject.getComputedStyle = () => subject.classList.computedStyle
   
   subject.tween = {}
   subject.tick = tick.bind(subject)
+  subject.setState = setState.bind(subject)
   subject.tickCallback = tickCallback
 
-  const {
-    transition,
-  } = subject.getComputedStyle()
-
-  const {
-    transitionDuration: duration,
-    transitionDelay: delay,
-    transitionEasingFunction: easingFunction,
-  } = transition || {}
-
-  const totalSteps = 60 * (duration / 1000)
-  const stepSize = 1 / totalSteps
+  const computedStyles = subject.getComputedStyle()
+  subject.state = { ...computedStyles }
+  subject.previousState = { ...computedStyles }
 
   subject.tween = {
-    hasTransition: Boolean(transition),
-    reset: reset.bind(this),
-    update: update.bind(this),
-    duration,
-    delay,
+    reset: reset.bind(subject),
+    update: update.bind(subject),
     shouldTransition: false,
-    totalSteps,
-    stepSize,
     stepsTaken: 0,
     k: 0,
   }
 
-  if (typeof easingFunction === 'function') {
-    subject.tween.easingFunction = easingFunction
-  } else {
-    const func = EasingFunctions[easingFunction]
-    
-    subject.tween.easingFunction = func || EasingFunctions.linear
-    if (!func) console.warn('No easing function found with that name, defaulting to \'linear\'')
-  }
+  window.m = subject
 
   return subject
 }
 
-function handleStateChange() {
-  const state = this.getComputedStyle()
-  console.log('state change', state)
-  if (!state.transition) {
-    applyStateToObj3d({
-      obj3d: this,
-      state,
-    })
-    return
-  }
-
-  this.tween.currentState = clone3DAttr(this)
-  
-  this.tween.targetState = clone3DAttr(state)
-
-  if (this.tween.delay) {
-    clearTimeout(this.tween.delayTimeout)
-    this.tween.delayTimeout = setTimeout(
-      () => {
-        
-        this.tween.shouldTransition = true
-        if (this.isEventful) {
-          this.dispatchEvent({
-            type: 'transitionStart',
-            target: this,
-          })
-        }
-      },
-      this.tween.delay
-    )
-  } else {
-    this.tween.shouldTransition = true
-    if (this.isEventful) {    
-      this.dispatchEvent({
-        type: 'transitionStart',
-        target: this,
-      })
-    }
-  }
-
-  if (this.tween.k > 0) {
-    this.tween.k = 0
-  }
+function handleClassListChange() {
+  const styles = this.getComputedStyle()
+  this.setState(styles)
 }
 
 function tick() {
@@ -123,7 +65,7 @@ function tick() {
     return
   }
   
-  if (this.tween.shouldTransition && this.tween.hasTransition) {
+  if (this.tween.shouldTransition) {
     this.tween.update()
   }
 
@@ -133,6 +75,7 @@ function tick() {
 } 
 
 function reset() {
+  console.log('reset')
   this.tween.shouldTransition = false
   this.tween.k = 0
   this.tween.stepsTaken = 0
@@ -148,12 +91,12 @@ function reset() {
 }
 
 function update() {
+  console.log('update')  
   const alpha = this.tween.easingFunction(this.tween.k)
   const state = tweenState({
     alpha,
-    from: this.tween.currentState,
-    to: this.tween.targetState,
-    debug: this.debug,
+    from: this.previousState,
+    to: this.state,
   })
 
   applyStateToObj3d({
@@ -161,26 +104,60 @@ function update() {
     state,
   })
 
-  if (this.debug) this.logging.log[performance.now()] = {
-    current: this.tween.currentState,
-    target: this.tween.targetState,
-    actual: this,
-    k: this.tween.k,
-    t: performance.now(),
-    alpha,
-  }
-
   this.tween.k += this.tween.stepSize
   this.tween.stepsTaken += 1
 }
 
-function getTransitionParameters(transition) {
+function setState(update, cb) {
+  console.log('setState')
+  
+  this.previousState = {
+    ...this.state,
+  }
+
+  this.state = {
+    ...this.state,
+    ...update,
+  }
+
+  if (this.state != this.previousState) {
+    this.handleStateChange(this.state)
+    cb && cb(this.state, this.previousState)
+  }
+}
+
+function handleStateChange(state) {
+  console.log('handlestatechange')
+  if (!state.transition) {
+    applyStateToObj3d({
+      obj3d: this,
+      state,
+    })
+    return
+  }
+
   const {
-    duration,
-    easingFunction,
-    delay = 0,
-    properties,
-  } = transition
+    transitionDuration = 0,
+    transitionEasingFunction = 'linear',
+  } = state.transition || {}
+  
+  const totalSteps = 60 * (transitionDuration / 1000)
+  const stepSize = 1 / totalSteps
+  
+  this.tween.totalSteps = totalSteps || 1
+  this.tween.stepSize = stepSize
+
+  if (typeof transitionEasingFunction === 'function') {
+    this.tween.easingFunction = transitionEasingFunction
+  } else {
+    const func = EasingFunctions[transitionEasingFunction]
+    
+    this.tween.easingFunction = func || EasingFunctions.linear
+    if (!func) console.warn('No easing function found with that name, defaulting to \'linear\'')
+  }
+
+  this.tween.shouldTransition = true
+
 }
 
 export default withStateTransition

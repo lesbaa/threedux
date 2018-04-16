@@ -78,32 +78,32 @@ class App {
       makeEventful,
     )
     
-    const increment = enhance(new Mesh(
+    const increment = new Mesh(
       new CubeGeometry(0.5,0.5,0.5),
       new MeshStandardMaterial({
         color: 0xff5555,
-      }))
+      })
     )
 
     increment.position.x = 1
     increment.position.y = -1
 
-    const decrement = enhance(new Mesh(
+    const decrement = new Mesh(
       new CubeGeometry(0.5,0.5,0.5),
       new MeshStandardMaterial({
         color: 0x5555ff,
-      }))
+      })
     )
 
     decrement.position.x = -1
     decrement.position.y = -1
 
-    increment.addEventListener('click', ({ target }) => {
-      target.actions.incrementAction()
+    increment.addEventListener('click', () => {
+      this.mesh.actions.incrementAction()
     })
 
-    decrement.addEventListener('click', ({ target }) => {
-      target.actions.decrementAction()
+    decrement.addEventListener('click', () => {
+      this.mesh.actions.decrementAction()
     })
 
     this.scene.add(increment)

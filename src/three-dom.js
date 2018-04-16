@@ -1,4 +1,5 @@
 export class StyleClassList {
+  // TODO add getter for the classList
   constructor(onUpdate, defaultStyle = {}, classList = []) {
     this.classList = classList
     this.computedStyle = defaultStyle

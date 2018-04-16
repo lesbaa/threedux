@@ -5,6 +5,7 @@ export default function tweenState({
 }) {
   const newState = {}
   for (const prop in to) {
+    if (prop === 'transition') continue
     const toHasPropHasLength = to[prop] && Object.keys(to[prop]).length
     const fromHasPropHasLength = from[prop] && Object.keys(from[prop]).length
 
