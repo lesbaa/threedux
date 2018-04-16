@@ -4,8 +4,8 @@ uniform sampler2D uSampler;
 varying vec2 vUv;
 
 void main() {
-  vec2 coord = vec2(gl_FragCoord.x, gl_FragCoord.y);
-  vec2 texelCoords = coord / uResolution;
+  vec2 coord = vec2(vUv.x, vUv.y);
+  vec2 texelCoords = coord;
   vec4 texel = texture2D(uSampler, texelCoords);
 
   float r = texel.r;
