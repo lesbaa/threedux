@@ -7,7 +7,7 @@ import {
   Vector3,
   Mesh,
 } from 'three'
-import store, { connect } from './store'
+import { connect } from './store'
 import setUpThree from '../src/modules/set-up-three.js'
 import withEvents from '../src/modules/with-events'
 import Stats from '../src/modules/stats'
@@ -15,11 +15,10 @@ import {
   bindActionCreators,
   compose,
 } from 'redux'
-import withTransition from '../src/modules/with-transition'
+
 import {
-  StyleClass
-} from '../src/three-dom'
-import withStateTransition from '../src/with-state-transition'
+  Style3D,
+} from '../src/StyleClassList'
 
 
 const incrementAction = () => ({
@@ -28,10 +27,6 @@ const incrementAction = () => ({
 
 const decrementAction = () => ({
   type: 'DECREMENT',
-})
-
-const withRotationTransition = withStateTransition({
-  tickCallback: (o) => { o.rotation.x += 0.01 },
 })
 
 class App {
@@ -63,8 +58,7 @@ class App {
 
     const connectToRedux = connect(
       mapStateToObj3D,
-      mapDispatchToObj3D,
-      withRotationTransition,      
+      mapDispatchToObj3D,   
     )
   
     const makeEventful = withEvents({
@@ -113,7 +107,7 @@ class App {
 
     this.scene.add(this.mesh)
 
-    this.style = new StyleClass({
+    this.style = new Style3D({
       color: {
         r: Math.random() * 3,
         g: Math.random() * 3,
@@ -127,11 +121,12 @@ class App {
     })
 
     this.mesh.classList.add(
-      new StyleClass({
+      new Style3D({
         transition: {
           transitionProperties: [
             'color',
             'position',
+            'rotation',
             'scale',
           ],
           transitionEasingFunction: 'elasticOut',
@@ -212,6 +207,11 @@ function mapStateToObj3D ({
   value,
 }) {
   return {
+    rotation: {
+      x: value,
+      y: value,
+      z: value,
+    },
     scale: {
       x: value,
       y: value,

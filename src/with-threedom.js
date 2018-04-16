@@ -7,9 +7,8 @@ import clone3DAttributes from './modules/clone-3d-attributes'
 import applyStateToObj3d from './modules/apply-state-to-obj3d'
 import tweenState from './modules/tween-state'
 import {
-  StyleClass,
   StyleClassList,
-} from './three-dom'
+} from './StyleClassList'
 
 const clone3DAttr = clone3DAttributes([
   'position',
@@ -24,9 +23,7 @@ const clone3DAttr = clone3DAttributes([
   'reflectivity',
 ])
 
-const withStateTransition = ({
-  tickCallback,
-}) => inputObj => {
+const withThreedom = inputObj => {
   const subject = inputObj.clone()
   
   subject.handleClassListChange = handleClassListChange.bind(subject)
@@ -38,7 +35,6 @@ const withStateTransition = ({
   subject.tween = {}
   subject.tick = tick.bind(subject)
   subject.setState = setState.bind(subject)
-  subject.tickCallback = tickCallback
 
   const computedStyles = subject.getComputedStyle()
   subject.state = { ...computedStyles }
@@ -74,11 +70,6 @@ function tick() {
   if (this.tween.shouldTransition) {
     this.tween.update()
   }
-
-  if (this.tickCallback) {
-    this.tickCallback(this)
-    this.tween.needsUpdate = true
-  }
 } 
 
 function reset(apply = false) {
@@ -113,6 +104,18 @@ function update() {
     obj3d: this,
     state,
   })
+
+  const nonTransitioningState = removeProperties({
+    obj: this.tween.targetState,
+    props: this.tween.transitionProperties,
+  })
+
+  if (Object.keys(nonTransitioningState).length) {
+    applyStateToObj3d({
+      obj3d: this,
+      state: nonTransitioningState,
+    })
+  }
 
   this.tween.k += this.tween.stepSize
   this.tween.stepsTaken += 1
@@ -187,14 +190,16 @@ function updateTransitionParams(transition = {}) {
   }
 }
 
-export default withStateTransition
+export default withThreedom
 
-// when state is updated
-// update transition params
-// reset state
-// update the targetState = state
-// currentState = object properties
-// tween from current => target
-
-// when ends, currentState = object properties
-// k = 0, stepsTaken = 0
+function removeProperties({
+  obj,
+  props,
+}) {
+  const newObj = {}
+  for (const key in obj) {
+    if (props.includes(key)) continue
+    newObj[key] = obj[key]
+  }
+  return newObj
+}

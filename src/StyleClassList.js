@@ -53,7 +53,7 @@ export class StyleClassList {
   computedStyle = {}
 }
 
-export class StyleClass {
+export class Style3D {
   constructor(properties) {
     this.props = {
       ...properties,

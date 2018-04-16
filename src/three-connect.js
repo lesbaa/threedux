@@ -1,24 +1,11 @@
 import apply from '../src/modules/apply-state-to-obj3d'
 import clone3DAttributes from './modules/clone-3d-attributes'
+import withThreedom from './with-threedom'
 
 import {
   StyleClassList,
   StyleClass,
-} from './three-dom'
-
-
-const clone3DAttrs = clone3DAttributes([
-  'position',
-  'rotation',
-  'scale',
-  'color',
-  'intensity',
-  'morphTargetInfluences',
-  'uniforms',
-  'attributes',
-  'refractionRatio',
-  'reflectivity',
-])
+} from './StyleClassList'
 
 const threeConnect = (
   store,
@@ -26,9 +13,8 @@ const threeConnect = (
 ) => (
   mapStateToObj3D,
   mapDispatchToObj3D,
-  transition,
 ) => (obj3d) => { 
-  const clonedObject = transition(obj3d.clone())
+  const clonedObject = withThreedom(obj3d.clone())
   
   store.subscribe(() => {
     const state = store.getState()
