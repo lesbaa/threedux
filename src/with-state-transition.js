@@ -77,31 +77,33 @@ function tick() {
 
   if (this.tickCallback) {
     this.tickCallback(this)
+    this.tween.needsUpdate = true
   }
 } 
 
 function reset(apply = false) {
-  console.log('reset')
   this.tween.shouldTransition = false
   this.tween.k = 0
   this.tween.stepsTaken = 0
-  this.dispatchEvent({
-    type: 'transitionEnd',
-    target: this,
-  })
-
+  
   if (apply) {
-    applyStateToObj3d({
-      obj3d: this,
-      state: clone3DAttr(this.state),
+    // debugger
+    // applyStateToObj3d({
+    //   obj3d: this,
+    //   state: clone3DAttr(this.state),
+    // })
+    // debugger
+    this.dispatchEvent({
+      type: 'transitionEnd',
+      target: this,
     })
   }
 }
 
 function update() {
-  console.log('update')  
   const alpha = this.tween.easingFunction(this.tween.k)
   const state = tweenState({
+    properties: this.tween.transitionProperties,
     alpha,
     from: this.tween.currentState,
     to: this.tween.targetState,
@@ -117,9 +119,7 @@ function update() {
   return
 }
 
-function setState(update, cb) {
-  console.log('setState')
-  
+function setState(update, cb) {  
   this.previousState = {
     ...this.state,
   }
@@ -136,14 +136,13 @@ function setState(update, cb) {
 }
 
 function handleStateChange(state) {
-  console.log('handlestatechange')
-
   if (this.tween.hasTransition) {
     this.tween.updateTransitionParams(state.transition)
     this.tween.reset()
     
-    this.tween.currentState = clone3DAttr(this)
     this.tween.targetState = this.state
+
+    this.tween.currentState = clone3DAttr(this)
 
     this.tween.shouldTransition = true
     return
@@ -155,7 +154,6 @@ function handleStateChange(state) {
   })
 
   return
-
 }
 
 function updateTransitionParams(transition = {}) {
@@ -167,6 +165,7 @@ function updateTransitionParams(transition = {}) {
   const {
     transitionDuration = 0,
     transitionEasingFunction = 'linear',
+    transitionProperties,
   } = transition
 
   this.tween.hasTransition = true
@@ -176,6 +175,7 @@ function updateTransitionParams(transition = {}) {
   
   this.tween.totalSteps = totalSteps || 1
   this.tween.stepSize = stepSize
+  this.tween.transitionProperties = transitionProperties
   
   if (typeof transitionEasingFunction === 'function') {
     this.tween.easingFunction = transitionEasingFunction

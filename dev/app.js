@@ -132,6 +132,7 @@ class App {
           transitionProperties: [
             'color',
             'position',
+            'scale',
           ],
           transitionEasingFunction: 'elasticOut',
           transitionDuration: 1000,

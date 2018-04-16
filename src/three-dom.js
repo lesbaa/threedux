@@ -27,10 +27,8 @@ export class StyleClassList {
 
   toggle = (style3D) => {
     if (this.classList.includes(style3D)) {
-      console.log('class removed!')
       this.remove(style3D)
     } else {
-      console.log('class added!')
       this.add(style3D)
     }
   }
