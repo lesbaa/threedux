@@ -70,6 +70,7 @@ function tick() {
   if (this.tween.shouldTransition) {
     this.tween.update()
   }
+  return
 } 
 
 function reset(apply = false) {
@@ -165,11 +166,16 @@ function updateTransitionParams(transition = {}) {
     return
   }
   
+  this.tween.transitionParams = {
+    ...this.tween.transitionParams,
+    ...transition,
+  }
+
   const {
     transitionDuration = 0,
     transitionEasingFunction = 'linear',
     transitionProperties,
-  } = transition
+  } = this.tween.transitionParams
 
   this.tween.hasTransition = true
   

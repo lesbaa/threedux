@@ -4,7 +4,7 @@ import {
   WebGLRenderer,
 } from 'three'
 
-export default function setUpThree({
+export function setUpThree({
   targetSelector = '#target',
   targetEl,
   trails = false,
@@ -39,3 +39,9 @@ export default function setUpThree({
     camera,
   }
 } 
+
+export const {
+  scene,
+  renderer,
+  camera,
+} = setUpThree()

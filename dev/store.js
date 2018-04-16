@@ -1,37 +1,11 @@
 import {
   createStore,
-  compose,
 } from 'redux'
 import threeConnect from '../src/three-connect'
-
-const initState = {
-  value: 0.0,
-}
-
-function cubeReducer(state = initState, action) {
-  const {
-    payload,
-    type,
-  } = action
-  switch(type) {
-    case 'INCREMENT': {
-      return {
-        value: state.value += 0.5,
-      }
-    }
-    case 'DECREMENT': {
-      return {
-        value: state.value -= 0.5,
-      }
-    }
-    default: {
-      return state
-    }
-  }
-}
+import sampleReducer from './reducers/sample-reducer'
 
 const store = createStore(
-  cubeReducer,
+  sampleReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
