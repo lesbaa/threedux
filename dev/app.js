@@ -133,7 +133,7 @@ class App {
             'color',
             'position',
           ],
-          transitionEasingFunction: 'linear',
+          transitionEasingFunction: 'elasticOut',
           transitionDuration: 1000,
         },
         color: {
@@ -211,7 +211,7 @@ function mapStateToObj3D ({
   value,
 }) {
   return {
-    rotation: {
+    scale: {
       x: value,
       y: value,
       z: value,

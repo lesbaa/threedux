@@ -34,7 +34,6 @@ const threeConnect = (
     const state = store.getState()
     const mappedState = mapStateToObj3D(state)
     clonedObject.setState(mappedState)
-    console.log('subscribe')
   })
 
   clonedObject.actions = mapDispatchToObj3D(store.dispatch)

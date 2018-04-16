@@ -16,12 +16,12 @@ function cubeReducer(state = initState, action) {
   switch(type) {
     case 'INCREMENT': {
       return {
-        value: state.value += 0.1,
+        value: state.value += 0.5,
       }
     }
     case 'DECREMENT': {
       return {
-        value: state.value -= 0.1,
+        value: state.value -= 0.5,
       }
     }
     default: {

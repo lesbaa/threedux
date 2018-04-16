@@ -1,3 +1,6 @@
+import {
+  Object3D,
+} from 'three'
 import * as EasingFunctions from './modules/easing-funcs'
 import cloneObject from './modules/clone-object'
 import clone3DAttributes from './modules/clone-3d-attributes'
@@ -27,7 +30,7 @@ const withStateTransition = ({
   const subject = inputObj.clone()
   
   subject.handleClassListChange = handleClassListChange.bind(subject)
-  subject.handleStateChange = handleStateChange.bind(subject)
+  subject.handleStateChange = handleStateChange.bind(subject) 
   subject.classList = new StyleClassList(subject.handleClassListChange, clone3DAttr(subject))
   
   subject.getComputedStyle = () => subject.classList.computedStyle
@@ -44,24 +47,27 @@ const withStateTransition = ({
   subject.tween = {
     reset: reset.bind(subject),
     update: update.bind(subject),
+    updateTransitionParams: updateTransitionParams.bind(subject),
+    currentState: subject.getComputedStyle(),
+    targetState: subject.getComputedStyle(),
     shouldTransition: false,
     stepsTaken: 0,
     k: 0,
   }
-
-  window.m = subject
-
   return subject
 }
 
 function handleClassListChange() {
   const styles = this.getComputedStyle()
+  this.tween.updateTransitionParams(styles.transition)
+  
   this.setState(styles)
+
 }
 
 function tick() {
   if (this.tween.k > 1) {
-    this.tween.reset()
+    this.tween.reset(true)
     return
   }
   
@@ -74,7 +80,7 @@ function tick() {
   }
 } 
 
-function reset() {
+function reset(apply = false) {
   console.log('reset')
   this.tween.shouldTransition = false
   this.tween.k = 0
@@ -84,10 +90,12 @@ function reset() {
     target: this,
   })
 
-  applyStateToObj3d({
-    obj3d: this,
-    state: this.getComputedStyle(),
-  })
+  if (apply) {
+    applyStateToObj3d({
+      obj3d: this,
+      state: clone3DAttr(this.state),
+    })
+  }
 }
 
 function update() {
@@ -95,8 +103,8 @@ function update() {
   const alpha = this.tween.easingFunction(this.tween.k)
   const state = tweenState({
     alpha,
-    from: this.previousState,
-    to: this.state,
+    from: this.tween.currentState,
+    to: this.tween.targetState,
   })
 
   applyStateToObj3d({
@@ -106,6 +114,7 @@ function update() {
 
   this.tween.k += this.tween.stepSize
   this.tween.stepsTaken += 1
+  return
 }
 
 function setState(update, cb) {
@@ -128,25 +137,46 @@ function setState(update, cb) {
 
 function handleStateChange(state) {
   console.log('handlestatechange')
-  if (!state.transition) {
-    applyStateToObj3d({
-      obj3d: this,
-      state,
-    })
+
+  if (this.tween.hasTransition) {
+    this.tween.updateTransitionParams(state.transition)
+    this.tween.reset()
+    
+    this.tween.currentState = clone3DAttr(this)
+    this.tween.targetState = this.state
+
+    this.tween.shouldTransition = true
     return
   }
 
+  applyStateToObj3d({
+    obj3d: this,
+    state,
+  })
+
+  return
+
+}
+
+function updateTransitionParams(transition = {}) {
+  if (!Object.keys(transition).length) {
+    this.tween.hasTransition = false
+    return
+  }
+  
   const {
     transitionDuration = 0,
     transitionEasingFunction = 'linear',
-  } = state.transition || {}
+  } = transition
+
+  this.tween.hasTransition = true
   
   const totalSteps = 60 * (transitionDuration / 1000)
   const stepSize = 1 / totalSteps
   
   this.tween.totalSteps = totalSteps || 1
   this.tween.stepSize = stepSize
-
+  
   if (typeof transitionEasingFunction === 'function') {
     this.tween.easingFunction = transitionEasingFunction
   } else {
@@ -155,9 +185,16 @@ function handleStateChange(state) {
     this.tween.easingFunction = func || EasingFunctions.linear
     if (!func) console.warn('No easing function found with that name, defaulting to \'linear\'')
   }
-
-  this.tween.shouldTransition = true
-
 }
 
 export default withStateTransition
+
+// when state is updated
+// update transition params
+// reset state
+// update the targetState = state
+// currentState = object properties
+// tween from current => target
+
+// when ends, currentState = object properties
+// k = 0, stepsTaken = 0
