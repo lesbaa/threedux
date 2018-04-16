@@ -29,6 +29,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.glsl$/,
+        loader: require.resolve('webpack-glsl-loader'),
+      },
+      {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         use: {

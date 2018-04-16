@@ -15,8 +15,8 @@ export default function tweenState({
     newState[prop] = {}
 
     for (const dimension in to[prop]) {
-
       const targetValue = to[prop][dimension]
+      if (typeof targetValue !== 'number') continue
       const initialValue = from[prop][dimension] || 0
       const range = targetValue - initialValue
       const delta = range * alpha

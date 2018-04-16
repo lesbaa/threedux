@@ -79,12 +79,10 @@ function reset(apply = false) {
   this.tween.stepsTaken = 0
   
   if (apply) {
-    // debugger
-    // applyStateToObj3d({
-    //   obj3d: this,
-    //   state: clone3DAttr(this.state),
-    // })
-    // debugger
+    applyStateToObj3d({
+      obj3d: this,
+      state: clone3DAttr(this.state),
+    })
     this.dispatchEvent({
       type: 'transitionEnd',
       target: this,

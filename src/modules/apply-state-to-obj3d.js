@@ -56,6 +56,7 @@ export default function applyStateToObj3d({
     
     if (prop === 'uniforms' && state.uniforms) {
       for (const uniformName in state.uniforms) {
+        if (typeof obj3d.uniforms[uniformName].value !== 'number') continue
         obj3d.uniforms[uniformName].value = state.uniforms[uniformName]
       }
       continue

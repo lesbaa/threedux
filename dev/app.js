@@ -61,11 +61,6 @@ class App {
     this.scene.add(this.mesh)
 
     this.style = new Style3D({
-      color: {
-        r: 1.0,
-        g: 1.0,
-        b: 1.0,
-      },
       transition: {
         transitionEasingFunction: 'linear',
       },
@@ -98,6 +93,7 @@ class App {
 
   loop = (t) => {
     this.mesh.tick()
+    this.mesh.material.tick()
     this.camera.position.x = Math.sin(t / 2000)
     this.camera.position.y = Math.cos(t / 2000)
     this.camera.lookAt(new Vector3(0,0,0))
