@@ -31,7 +31,7 @@ const enhance = compose(
 const style = new Style3D({
   transition: {
     transitionDuration: 1000,
-    transitionEasingFunction: 'linear',
+    transitionEasingFunction: 'elasticOut',
     transitionProperties: [
       'uniforms',
     ], 

@@ -9,3 +9,7 @@ This is an attempt to bring state management into three.js for the purposes of f
 ### Wait, redux and three? what? Are you crazy!?
 
 HAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHA. Yes.
+
+### Common gotchas
+
+ - Properties changed via three-dom will always overwrite direct manipulations in the render loop.  There is no 'specicifity' like there is in CSS
