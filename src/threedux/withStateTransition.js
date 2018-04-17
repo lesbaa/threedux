@@ -25,13 +25,13 @@ const withStateTransition = inputObj => {
   
   subject.handleClassListChange = handleClassListChange.bind(subject)
   subject.handleStateChange = handleStateChange.bind(subject) 
-  subject.classList = new Style3DList(subject.handleClassListChange, clone3DAttr(subject))
+  subject.setState = setState.bind(subject)
+  subject.tick = tick.bind(subject)
   
+  subject.classList = new Style3DList(subject.handleClassListChange, clone3DAttr(subject))
   subject.getComputedStyle = () => subject.classList.computedStyle
   
   subject.tween = {}
-  subject.tick = tick.bind(subject)
-  subject.setState = setState.bind(subject)
 
   const computedStyles = subject.getComputedStyle()
   subject.state = { ...computedStyles }
