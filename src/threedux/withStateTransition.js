@@ -67,11 +67,10 @@ function tick() {
   if (this.tween.shouldTransition) {
     this.tween.update()
   }
-
-  if (typeof this.tickCallback === 'function') {
-    this.tickCallback(this)
+  // TODO tidy this, the animation shouldn't really be in 'state'
+  if (typeof this.state.animation === 'function') {
+    this.state.animation(this)
   }
-
   return
 } 
 
