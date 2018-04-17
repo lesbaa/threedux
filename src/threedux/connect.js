@@ -6,11 +6,11 @@ const threeConnect = (
   mapDispatchToObj3D,
 ) => (obj3D) => { 
   const clonedObject = withStateTransition(obj3D.clone())
-  
+
   store.subscribe(() => {
     const state = store.getState()
-    const mappedState = mapStateToObj3D(state)
-    clonedObject.setState(mappedState)
+    const mappedState = mapStateToObj3D(state, clonedObject)
+    if (mappedState) clonedObject.setState(mappedState)
   })
 
   clonedObject.actions = mapDispatchToObj3D(store.dispatch)
