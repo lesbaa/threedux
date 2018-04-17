@@ -30,8 +30,8 @@ const enhance = compose(
 
 const style = new Style3D({
   transition: {
-    transitionDuration: 1000,
-    transitionEasingFunction: 'elasticOut',
+    transitionDuration: 3000,
+    transitionEasingFunction: 'linear',
     transitionProperties: [
       'uniforms',
     ], 
@@ -45,6 +45,7 @@ enhancedMaterial.classList.add(style)
 const texture = new TextureLoader().load('./assets/cube-map.png')
 
 enhancedMaterial.uniforms.uSampler.value = texture
+enhancedMaterial.tickCallback = (o) => { o.uniforms.uTime.value += 0.1 }
 
 window.unifs = enhancedMaterial
 function mapStateToObj3D ({
@@ -52,7 +53,7 @@ function mapStateToObj3D ({
 }) {
   return {
     uniforms: {
-      uTime: value,
+      uVary: value,
     },
   }
 }

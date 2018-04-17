@@ -70,6 +70,11 @@ function tick() {
   if (this.tween.shouldTransition) {
     this.tween.update()
   }
+
+  if (typeof this.tickCallback === 'function') {
+    this.tickCallback(this)
+  }
+
   return
 } 
 

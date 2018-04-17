@@ -71,8 +71,8 @@ enhancedMesh.classList.add(
         'rotation',
         'scale',
       ],
-      transitionEasingFunction: 'elasticOut',
-      transitionDuration: 2000,
+      transitionEasingFunction: 'linear',
+      transitionDuration: 3000,
     },
     position: {
       x: 0,
