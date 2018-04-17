@@ -67,12 +67,12 @@ enhancedMesh.classList.add(
   new Style3D({
     transition: {
       transitionProperties: [
-        'position',
+        // 'position',
         'rotation',
         'scale',
       ],
-      transitionEasingFunction: 'linear',
-      transitionDuration: 3000,
+      transitionEasingFunction: 'elasticOut',
+      transitionDuration: 1000,
     },
     position: {
       x: 0,
@@ -84,7 +84,7 @@ enhancedMesh.classList.add(
 
 function mapStateToObj3D ({
   value,
-}) {
+}, obj3d) {
   return {
     rotation: {
       x: value,

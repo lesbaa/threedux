@@ -36,6 +36,7 @@ const style = new Style3D({
       'uniforms',
     ], 
   },
+  animation: o => { o.uniforms.uTime.value += 0.1 },
 })
 
 const enhancedMaterial = enhance(material)
@@ -45,17 +46,17 @@ enhancedMaterial.classList.add(style)
 const texture = new TextureLoader().load('./assets/cube-map.png')
 
 enhancedMaterial.uniforms.uSampler.value = texture
-enhancedMaterial.tickCallback = (o) => { o.uniforms.uTime.value += 0.1 }
+// enhancedMaterial.tickCallback = (o) => { o.uniforms.uTime.value += 0.1 }
 
 window.unifs = enhancedMaterial
 function mapStateToObj3D ({
   value,
-}) {
-  return {
+}, obj3d) {
+  obj3d.setState({
     uniforms: {
       uVary: value,
     },
-  }
+  })
 }
 
 function mapDispatchToObj3D (dispatch) {
