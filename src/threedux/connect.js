@@ -1,15 +1,11 @@
-import apply from '../src/modules/apply-state-to-obj3d'
-import clone3DAttributes from './modules/clone-3d-attributes'
-import withThreedom from './with-threedom'
-
+import withStateTransition from './withStateTransition'
 const threeConnect = (
   store,
-  applyFunc = apply,
 ) => (
   mapStateToObj3D,
   mapDispatchToObj3D,
-) => (obj3d) => { 
-  const clonedObject = withThreedom(obj3d.clone())
+) => (obj3D) => { 
+  const clonedObject = withStateTransition(obj3D.clone())
   
   store.subscribe(() => {
     const state = store.getState()

@@ -2,8 +2,8 @@
  * 
  * @param {Object} setup object
  * three.js bindings for tween library
- * obj3d: a three.js object, supported object types so far are
- *  - Object3d
+ * obj3D: a three.js object, supported object types so far are
+ *  - Object3D
  *  - Material
  *  - ShaderMaterial,
  *  - Light
@@ -25,20 +25,20 @@ const state = tweenState({
   debug: this.debug
 })
 
-applyStateToObj3d({
-  obj3d: myMesh,
+applyStateToObj3D({
+  obj3D: myMesh,
   state,
 })
 
  */
-export default function applyStateToObj3d({
-  obj3d,
+export default function applyStateToObj3D({
+  obj3D,
   state,
 }) {
   for (const prop in state) {
-    if (prop === 'color' && obj3d.material) {
-      for (const channel in obj3d.material.color) {
-        obj3d.material.color[channel] = state.color[channel]
+    if (prop === 'color' && obj3D.material) {
+      for (const channel in obj3D.material.color) {
+        obj3D.material.color[channel] = state.color[channel]
       }
       continue
     }
@@ -49,22 +49,22 @@ export default function applyStateToObj3d({
       prop === 'reflectivity'
     )
 
-    if (isDimenionlessAttribute && obj3d[prop]) {
-      obj3d[prop] = state[prop].val
+    if (isDimenionlessAttribute && obj3D[prop]) {
+      obj3D[prop] = state[prop].val
       continue
     }
     
     if (prop === 'uniforms' && state.uniforms) {
       for (const uniformName in state.uniforms) {
-        if (typeof obj3d.uniforms[uniformName].value !== 'number') continue
-        obj3d.uniforms[uniformName].value = state.uniforms[uniformName]
+        if (typeof obj3D.uniforms[uniformName].value !== 'number') continue
+        obj3D.uniforms[uniformName].value = state.uniforms[uniformName]
       }
       continue
     }
 
     for (const dimension in state[prop]) {
-      if (!obj3d[prop]) continue
-      obj3d[prop][dimension] = state[prop][dimension]
+      if (!obj3D[prop]) continue
+      obj3D[prop][dimension] = state[prop][dimension]
     }
   }
 }

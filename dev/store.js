@@ -1,7 +1,7 @@
 import {
   createStore,
 } from 'redux'
-import threeConnect from '../src/three-connect'
+import threeConnect from '../src/threedux/connect'
 import sampleReducer from './reducers/sample-reducer'
 
 const store = createStore(

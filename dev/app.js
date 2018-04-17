@@ -13,7 +13,7 @@ import {
   renderer,
   camera,
 } from '../src/modules/set-up-three.js'
-import withEvents from '../src/modules/with-events'
+
 import Stats from '../src/modules/stats'
 import mesh, {
   increment,
@@ -22,7 +22,7 @@ import mesh, {
 
 import {
   Style3D,
-} from '../src/StyleClassList'
+} from '../src/threedux/Style3D'
 
 class App {
   constructor() {

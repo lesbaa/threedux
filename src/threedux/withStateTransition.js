@@ -1,14 +1,11 @@
-import {
-  Object3D,
-} from 'three'
-import * as EasingFunctions from './modules/easing-funcs'
-import cloneObject from './modules/clone-object'
-import clone3DAttributes from './modules/clone-3d-attributes'
-import applyStateToObj3d from './modules/apply-state-to-obj3d'
-import tweenState from './modules/tween-state'
+import * as EasingFunctions from './easing'
+import clone3DAttributes from './clone3DAttributes'
+import applyStateToObj3D from './applyStateToObj3D'
+import tweenState from './tweenState'
+import removeProperties from './removeProperties'
 import {
   Style3DList,
-} from './StyleClassList'
+} from './Style3D'
 
 const clone3DAttr = clone3DAttributes([
   'position',
@@ -23,7 +20,7 @@ const clone3DAttr = clone3DAttributes([
   'reflectivity',
 ])
 
-const withThreedom = inputObj => {
+const withStateTransition = inputObj => {
   const subject = inputObj.clone()
   
   subject.handleClassListChange = handleClassListChange.bind(subject)
@@ -84,8 +81,8 @@ function reset(apply = false) {
   this.tween.stepsTaken = 0
   
   if (apply) {
-    applyStateToObj3d({
-      obj3d: this,
+    applyStateToObj3D({
+      obj3D: this,
       state: clone3DAttr(this.state),
     })
     this.dispatchEvent({
@@ -104,8 +101,8 @@ function update() {
     to: this.tween.targetState,
   })
 
-  applyStateToObj3d({
-    obj3d: this,
+  applyStateToObj3D({
+    obj3D: this,
     state,
   })
 
@@ -115,8 +112,8 @@ function update() {
   })
 
   if (Object.keys(nonTransitioningState).length) {
-    applyStateToObj3d({
-      obj3d: this,
+    applyStateToObj3D({
+      obj3D: this,
       state: nonTransitioningState,
     })
   }
@@ -155,8 +152,8 @@ function handleStateChange(state) {
     return
   }
 
-  applyStateToObj3d({
-    obj3d: this,
+  applyStateToObj3D({
+    obj3D: this,
     state,
   })
 
@@ -199,16 +196,4 @@ function updateTransitionParams(transition = {}) {
   }
 }
 
-export default withThreedom
-
-function removeProperties({
-  obj,
-  props,
-}) {
-  const newObj = {}
-  for (const key in obj) {
-    if (props.includes(key)) continue
-    newObj[key] = obj[key]
-  }
-  return newObj
-}
+export default withStateTransition

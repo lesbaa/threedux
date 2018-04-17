@@ -9,7 +9,7 @@ import {
 } from 'redux'
 import {
   Style3D,
-} from '../../src/StyleClassList'
+} from '../../src/threedux/Style3D'
 import { connect } from '../store'
 import {
   incrementAction,

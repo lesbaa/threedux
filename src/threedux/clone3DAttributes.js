@@ -50,9 +50,9 @@ export default function clone3DAttributes (attrs = [
       if (attr === 'uniforms' && obj.uniforms){
         newObj.uniforms = {}
         for (const uniformName in obj.uniforms) {
-            newObj.uniforms[uniformName] = obj.isShaderMaterial || (obj.material && obj.material.isShaderMaterial)
-              ? obj.uniforms[uniformName].value
-              : obj.uniforms[uniformName]
+          newObj.uniforms[uniformName] = obj.isShaderMaterial || (obj.material && obj.material.isShaderMaterial)
+            ? obj.uniforms[uniformName].value
+            : obj.uniforms[uniformName]
         }
         continue
       }
