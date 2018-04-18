@@ -58,7 +58,7 @@ function handleClassListChange() {
 
 }
 
-function tick() {
+function tick(t) {
   if (this.tween.k > 1) {
     this.tween.reset(true)
     return
@@ -69,7 +69,7 @@ function tick() {
   }
   // TODO tidy this, the animation shouldn't really be in 'state'
   if (typeof this.state.animation === 'function') {
-    this.state.animation(this)
+    this.state.animation(this, t)
   }
   return
 } 

@@ -1,5 +1,6 @@
 import {
   CubeGeometry,
+  SphereGeometry,
   MeshStandardMaterial,
   Mesh,
 } from 'three'
@@ -22,8 +23,28 @@ import {
   renderer,
   camera,
 } from '../../src/modules/set-up-three'
+
+const geom = new SphereGeometry(1,32,32)
+geom.faces.forEach(face => {
+  const randomX = (Math.random() - 0.5) / 20.0
+  const randomY = (Math.random() - 0.5) / 20.0
+  const randomZ = (Math.random() - 0.5) / 20.0
+  geom.vertices[face.a].x += randomX
+  geom.vertices[face.a].y += randomX
+  geom.vertices[face.a].z += randomX
+  geom.vertices[face.b].x += randomY
+  geom.vertices[face.b].y += randomY
+  geom.vertices[face.b].z += randomY
+  geom.vertices[face.c].x += randomZ
+  geom.vertices[face.c].y += randomZ
+  geom.vertices[face.c].z += randomZ
+})
+
+geom.needsUpdate = true
+geom.computeVertexNormals()
+
 const mesh = new Mesh(
-  new CubeGeometry(1,1,1),
+  geom,
   connectedMaterial,
 )
 
@@ -74,6 +95,10 @@ enhancedMesh.classList.add(
       transitionEasingFunction: 'elasticOut',
       transitionDuration: 1000,
     },
+    animation: (o,t) => {
+      o.rotation.y += 0.01
+      o.geometry.rotateX(Math.sin(t / 2000) / 20.0)
+    },
     position: {
       x: 0,
       y: 0,
@@ -86,11 +111,6 @@ function mapStateToObj3D ({
   value,
 }, obj3d) {
   return {
-    rotation: {
-      x: value,
-      y: value,
-      z: value,
-    },
   }
 }
 
