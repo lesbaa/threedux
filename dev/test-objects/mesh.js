@@ -17,7 +17,7 @@ import {
   decrementAction,
 } from '../actions'
 import withEvents from '../../src/modules/with-events'
-import connectedMaterial from './shader-material'
+import connectedMaterial from './palantir-material'
 import {
   scene,
   renderer,
