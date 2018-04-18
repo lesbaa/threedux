@@ -11,13 +11,13 @@ import {
 } from 'redux'
 import {
   Style3D,
-} from '../../src/threedux/Style3D'
-import { connect } from '../store'
-import shader from './palantir-material'
+} from '../../../src/threedux/Style3D'
+import { connect } from '../../store'
+import shader from './shader'
 import {
   incrementAction,
   decrementAction,
-} from '../actions'
+} from '../../actions'
 
 const material = new ShaderMaterial(shader)
 const connectToRedux = connect(
@@ -37,23 +37,19 @@ const style = new Style3D({
       'uniforms',
     ], 
   },
-  animation: o => { o.uniforms.uTime.value += 0.1 },
+  animation: o => { o.uniforms.uTime.value += 0.01 },
 })
 
 const enhancedMaterial = enhance(material)
 
 enhancedMaterial.classList.add(style)
 
-const textureBump = new TextureLoader().load('./assets/noise_1.jpg')
-const textureColor = new TextureLoader().load('./assets/noise_2.jpg')
+const texture = new TextureLoader().load('./assets/texture-map_2.png')
 
-enhancedMaterial.uniforms.uSamplerBump.value = textureBump
-enhancedMaterial.uniforms.uSamplerBump.value.wrapS = RepeatWrapping
-enhancedMaterial.uniforms.uSamplerBump.value.wrapT = RepeatWrapping
+enhancedMaterial.uniforms.uSampler.value = texture
+enhancedMaterial.uniforms.uSampler.value.wrapS = RepeatWrapping
+enhancedMaterial.uniforms.uSampler.value.wrapT = RepeatWrapping
 
-enhancedMaterial.uniforms.uSamplerColor.value = textureColor
-enhancedMaterial.uniforms.uSamplerColor.value.wrapS = RepeatWrapping
-enhancedMaterial.uniforms.uSamplerColor.value.wrapT = RepeatWrapping
 // enhancedMaterial.tickCallback = (o) => { o.uniforms.uTime.value += 0.1 }
 
 window.unifs = enhancedMaterial
