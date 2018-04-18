@@ -7,7 +7,7 @@ void main() {
   vNormal = normal;
   vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(
-    position.xyz + normal,
+    position.xyz,
     1.0
   );
 }
