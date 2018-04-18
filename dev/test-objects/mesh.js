@@ -24,29 +24,31 @@ import {
   camera,
 } from '../../src/modules/set-up-three'
 
-const geom = new SphereGeometry(1,32,32)
-geom.faces.forEach(face => {
-  const randomX = (Math.random() - 0.5) / 20.0
-  const randomY = (Math.random() - 0.5) / 20.0
-  const randomZ = (Math.random() - 0.5) / 20.0
-  geom.vertices[face.a].x += randomX
-  geom.vertices[face.a].y += randomX
-  geom.vertices[face.a].z += randomX
-  geom.vertices[face.b].x += randomY
-  geom.vertices[face.b].y += randomY
-  geom.vertices[face.b].z += randomY
-  geom.vertices[face.c].x += randomZ
-  geom.vertices[face.c].y += randomZ
-  geom.vertices[face.c].z += randomZ
-})
+const geom = new SphereGeometry(2,32,32)
+// geom.faces.forEach(face => {
+//   const randomX = (Math.random() - 0.5) / 50.0
+//   const randomY = (Math.random() - 0.5) / 50.0
+//   const randomZ = (Math.random() - 0.5) / 50.0
+//   geom.vertices[face.a].x += randomX
+//   geom.vertices[face.a].y += randomX
+//   geom.vertices[face.a].z += randomX
+//   geom.vertices[face.b].x += randomY
+//   geom.vertices[face.b].y += randomY
+//   geom.vertices[face.b].z += randomY
+//   geom.vertices[face.c].x += randomZ
+//   geom.vertices[face.c].y += randomZ
+//   geom.vertices[face.c].z += randomZ
+// })
 
-geom.needsUpdate = true
-geom.computeVertexNormals()
+// geom.needsUpdate = true
+// geom.computeVertexNormals()
 
 const mesh = new Mesh(
   geom,
   connectedMaterial,
 )
+
+mesh.rotation.y = Math.PI / -2;
 
 // new MeshBasicMaterial({
 //   map: new TextureLoader().load('./assets/cube-map.png'),
@@ -95,10 +97,10 @@ enhancedMesh.classList.add(
       transitionEasingFunction: 'elasticOut',
       transitionDuration: 1000,
     },
-    animation: (o,t) => {
-      o.rotation.y += 0.01
-      o.geometry.rotateX(Math.sin(t / 2000) / 20.0)
-    },
+    // animation: (o,t) => {
+    //   o.geometry.rotateX(Math.sin(t / 2000) / 20.0)
+    //   o.geometry.rotateY(Math.cos(t / 2000) / 20.0)
+    // },
     position: {
       x: 0,
       y: 0,

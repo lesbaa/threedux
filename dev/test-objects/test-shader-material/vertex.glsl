@@ -1,6 +1,5 @@
 uniform float uTime;
 varying vec2 vUv;
-varying float proximityToUp;
 varying vec3 vNormal;
 
 void main() {
@@ -8,9 +7,7 @@ void main() {
   vNormal = normal;
   vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(
-    position.x,
-    position.y,
-    position.z,
+    position.xyz + normal,
     1.0
   );
 }

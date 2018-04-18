@@ -41,6 +41,7 @@ class App {
     this.mesh = mesh
 
     this.camera.position.z = 5
+    this.camera.lookAt(new Vector3(0,0,0))
 
     increment.position.x = 1
     increment.position.y = -1
