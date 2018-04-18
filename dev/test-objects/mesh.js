@@ -47,7 +47,7 @@ export const decrement = new Mesh(
 
 const connectToRedux = connect(
   mapStateToObj3D,
-  mapDispatchToObj3D,   
+  mapDispatchToObj3D,
 )
 
 const makeEventful = withEvents({
