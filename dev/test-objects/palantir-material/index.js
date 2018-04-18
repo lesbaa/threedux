@@ -46,6 +46,7 @@ enhancedMaterial.classList.add(style)
 
 const textureBump = new TextureLoader().load('./assets/noise_1.jpg')
 const textureColor = new TextureLoader().load('./assets/noise_2.jpg')
+const textureSauron = new TextureLoader().load('./assets/sauron.jpg')
 
 enhancedMaterial.uniforms.uSamplerBump.value = textureBump
 enhancedMaterial.uniforms.uSamplerBump.value.wrapS = RepeatWrapping
@@ -54,6 +55,10 @@ enhancedMaterial.uniforms.uSamplerBump.value.wrapT = RepeatWrapping
 enhancedMaterial.uniforms.uSamplerColor.value = textureColor
 enhancedMaterial.uniforms.uSamplerColor.value.wrapS = RepeatWrapping
 enhancedMaterial.uniforms.uSamplerColor.value.wrapT = RepeatWrapping
+
+enhancedMaterial.uniforms.uSauron.value = textureSauron
+enhancedMaterial.uniforms.uSauron.value.wrapS = RepeatWrapping
+enhancedMaterial.uniforms.uSauron.value.wrapT = RepeatWrapping
 // enhancedMaterial.tickCallback = (o) => { o.uniforms.uTime.value += 0.1 }
 
 window.unifs = enhancedMaterial

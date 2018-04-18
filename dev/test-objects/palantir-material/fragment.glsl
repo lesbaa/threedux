@@ -3,14 +3,23 @@ uniform float uVary;
 uniform vec2 uResolution;
 uniform sampler2D uSamplerBump;
 uniform sampler2D uSamplerColor;
+uniform sampler2D uSauron;
 varying vec2 vUv;
+varying vec3 vEye;
 varying vec3 vNormal;
+varying vec3 vReflectNormal;
 
 # define textureScale 1.0
 
 void main() {
+
   float timeOffset = uTime / 120.0;
   float sinTime = 0.4 + sin(timeOffset * 10.0) / 6.0;
+
+  vec3 reflected = reflect( vEye, vReflectNormal / 3.0 );
+  float m = 3. * sqrt( pow( reflected.x, 2. ) + pow( reflected.y, 2. ) + pow( reflected.z + 1., 2. ) );
+  vec2 vN = vec2(reflected.x * m + sinTime, reflected.y * m + .5);
+  vec4 reflection = texture2D(uSauron, vN);
 
   float fBumpCoordX = vUv.x + vNormal.y / 2.0;
   float fBumpCoordY = vUv.y + timeOffset / 1.5;
@@ -29,10 +38,12 @@ void main() {
 
   float shadow = (vNormal.x + vNormal.y + vNormal.z) / 3.0;
 
-  float r = vColorTwoMap.r / 4.0;
-  float g = vColorTwoMap.g / 5.0;
-  float b = ((vColorMap.b > sinTime ? vColorTwoMap.g : vColorTwoMap.r / 3.0) + vBumpMap.b + shadow) / 3.0 + (vNormal.y / 2.0);
-  float a = 1.0;
+  reflection = reflection / 3.0;
+
+  float r = vColorTwoMap.r / 4.0 + reflection.r;
+  float g = vColorTwoMap.g / 5.0 + reflection.g;
+  float b = ((vColorMap.b > sinTime ? vColorTwoMap.g : vColorTwoMap.r / 3.0) + vBumpMap.b + shadow) / 3.0 + (vNormal.y / 2.0) + reflection.b;
+  float a = 1.0 + reflection.a;
 
   gl_FragColor = vec4(
     r / 1.2,

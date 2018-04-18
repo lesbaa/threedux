@@ -11,6 +11,7 @@ export default {
     'uResolution': { value: res },
     'uSamplerBump': { type: 't', texture: null },
     'uSamplerColor': { type: 't', texture: null },
+    'uSauron': { type: 't', texture: null },
   },
   vertexShader,
   fragmentShader,
