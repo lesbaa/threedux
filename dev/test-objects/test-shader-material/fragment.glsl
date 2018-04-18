@@ -11,9 +11,9 @@ void main() {
   vec2 texelCoords = coord;
   vec4 texel = texture2D(uSampler, texelCoords);
 
-  float r = vNormal.y > uVary * 20.0 ? texel.r : 1.0 - texel.r;
-  float g = vNormal.y > uVary * 20.0 ? texel.g : 1.0 - texel.g;
-  float b = vNormal.y > uVary * 20.0 ? texel.b : 1.0 - texel.b;
+  float r = vNormal.y > uVary * 20.0 ? texel.r : texel.r - vNormal.x;
+  float g = vNormal.y > uVary * 20.0 ? texel.g : texel.g - vNormal.y;
+  float b = vNormal.y > uVary * 20.0 ? texel.b : texel.b - vNormal.z;
   float a = texel.a;
 
   gl_FragColor = vec4(
