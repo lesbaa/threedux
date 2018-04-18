@@ -13,7 +13,7 @@ import {
   Style3D,
 } from '../../src/threedux/Style3D'
 import { connect } from '../store'
-import shader from './test-shader-material'
+import shader from './palantir-material'
 import {
   incrementAction,
   decrementAction,
