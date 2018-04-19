@@ -3,11 +3,10 @@ uniform float uVary;
 uniform vec2 uResolution;
 uniform sampler2D uSamplerBump;
 uniform sampler2D uSamplerColor;
-uniform sampler2D uSauron;
+uniform sampler2D uReflect;
 varying vec2 vUv;
 varying vec3 vEye;
 varying vec3 vNormal;
-varying vec3 vReflectNormal;
 
 # define textureScale 1.0
 
@@ -16,10 +15,9 @@ void main() {
   float timeOffset = uTime / 120.0;
   float sinTime = 0.4 + sin(timeOffset * 10.0) / 6.0;
 
-  vec3 reflected = reflect( vEye, vReflectNormal / 3.0 );
-  float m = 3. * sqrt( pow( reflected.x, 2. ) + pow( reflected.y, 2. ) + pow( reflected.z + 1., 2. ) );
-  vec2 vN = vec2(reflected.x * m + sinTime, reflected.y * m + .5);
-  vec4 reflection = texture2D(uSauron, vN);
+  // vec3 reflected = reflect( vEye, vNormal / 2.0);
+  vec2 reflected = (vNormal.xy / 2.0) + 0.5;
+  vec4 reflection = texture2D(uSamplerColor, reflected.xy);
 
   float fBumpCoordX = vUv.x + vNormal.y / 2.0;
   float fBumpCoordY = vUv.y + timeOffset / 1.5;
