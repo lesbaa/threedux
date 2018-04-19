@@ -11,11 +11,10 @@ varying vec3 vNormal;
 # define textureScale 1.0
 
 void main() {
-
+  // https://www.clicktorelease.com/blog/creating-spherical-environment-mapping-shader/
   float timeOffset = uTime / 120.0;
   float sinTime = 0.4 + sin(timeOffset * 10.0) / 6.0;
 
-  // vec3 reflected = reflect( vEye, vNormal / 2.0);
   vec2 reflected = (vNormal.xy / 2.0) + 0.5;
   vec4 reflection = texture2D(uSamplerColor, reflected.xy);
 
