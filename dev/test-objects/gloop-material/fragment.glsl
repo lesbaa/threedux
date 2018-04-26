@@ -1,39 +1,46 @@
 uniform float uTime;
 uniform float uVary;
 uniform vec2 uResolution;
-uniform sampler2D uSamplerColor;
+uniform vec2 uPointOne;
+uniform vec2 uPointTwo;
+uniform vec2 uPointThree;
+uniform vec2 uPointFour;
 
 varying vec2 vUv;
 
-# define textureScale 1.0
+# define THRESH 0.6
 
 float random(vec2 c){
   return fract(sin(dot( c.xy, vec2(12.9898,78.233))) * 43758.5453);
 }
 
+bool isWithinRange(vec2 p, vec2 t, float range) {
+  return distance(p, t) < range;
+}
 
 void main() {
   
-  vec4 texel = texture2D(uSamplerColor, vUv.xy);
+  float sinT = sin(uTime / 5.0) / 5.0;
+  float cosT = cos(uTime / 5.0) / 5.0;
   
-  float x = 1.0 - vUv.x * 50.0;
-  float y = 1.0 - vUv.y * 50.0;
-  float xPy = x + y;
-  float xy = x * y;
-  float xOy = x / y;
+  vec2 pointOne = vec2(uPointOne.y + sinT, uPointOne.y + cosT);
+  vec2 pointTwo = vec2(uPointTwo.y + cosT, uPointTwo.y + sinT);
+  vec2 pointThree = vec2(uPointThree.y + cosT, uPointThree.y + cosT);
+  vec2 pointFour = vec2(uPointFour.y + cosT, uPointFour.y + sinT);
 
-  float r = sin(xPy / 10.0) + sin(y / 22.0 + y) + cos(y / 50.0) + sin(x / 9.0) + cos(xy / 13.0 + uTime / 30.0) + sin(y / 25.0 + sin(uTime / 14.0)) + cos(x) - sin(y / 2.0);
-  float g = sin(xOy / 10.0) + sin(x / 22.0 + x) + cos(x / 30.0) + sin(y / 7.0) + sin(xOy / 13.0 + uTime / 30.0) + cos(y / 25.0 + sin(x + uTime / 50.0 + sin(y / xy))) + cos(x) - sin(xy / 22.0);
-  float b = sin(xPy / 15.0) + sin(x / 30.0 + y) + cos(y / 40.0) + sin(y / 10.0) + sin(x + uTime / 30.0) + cos(y / 25.0 + sin(x + uTime / 40.0 + sin(y / xy))) + cos(x) - sin(xy / 22.0);
-  
-  r = r < 0.5 ? 1.0 : 0.0;
-  g = g > 0.5 ? 1.0 : 0.0;
-  b = b < 0.5 ? 1.0 : 0.0;
+  float distOne = sqrt(distance(pointOne, vUv.xy));
+  float distTwo = sqrt(distance(pointTwo, vUv.xy));
+  float distThree = sqrt(distance(pointThree, vUv.xy));
+  float distFour = sqrt(distance(pointFour, vUv.xy));
+
+  float r = distOne + distTwo + distThree + distFour;
+  float g = distOne + distTwo + distThree;
+  float b = distOne + distTwo;
 
   gl_FragColor = vec4(
-    (r + texel.r / 2.0),
-    (g + texel.g / 2.0),
-    (b + texel.b / 2.0),
+    r / 4.0 > THRESH ? 1.0 : 0.3 ,
+    g / 3.0 > THRESH ? 1.0 : 0.3 ,
+    b / 2.0 > THRESH ? 1.0 : 0.3 ,
     1.0
   );
 }

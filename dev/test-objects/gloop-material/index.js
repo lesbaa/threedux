@@ -37,18 +37,15 @@ const style = new Style3D({
       'uniforms',
     ], 
   },
-  animation: o => { o.uniforms.uTime.value += 0.1 },
+  animation: o => {
+    o.uniforms.uTime.value += 0.1
+  },
 })
 
 const enhancedMaterial = enhance(material)
 
 enhancedMaterial.classList.add(style)
 
-const textureReflect = new TextureLoader().load('./assets/color_noise.jpg')
-
-enhancedMaterial.uniforms.uSamplerColor.value = textureReflect
-enhancedMaterial.uniforms.uSamplerColor.value.wrapS = RepeatWrapping
-enhancedMaterial.uniforms.uSamplerColor.value.wrapT = RepeatWrapping
 // enhancedMaterial.tickCallback = (o) => { o.uniforms.uTime.value += 0.1 }
 
 window.unifs = enhancedMaterial

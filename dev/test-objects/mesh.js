@@ -24,7 +24,8 @@ import {
   camera,
 } from '../../src/modules/set-up-three'
 
-const geom = new SphereGeometry(2,32,32)
+// const geom = new SphereGeometry(2,32,32)
+const geom = new CubeGeometry(2,2,2)
 // geom.faces.forEach(face => {
 //   const randomX = (Math.random() - 0.5) / 50.0
 //   const randomY = (Math.random() - 0.5) / 50.0

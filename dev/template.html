@@ -6,6 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Threedux</title>
   <style>
+    @import url('https://fonts.googleapis.com/css?family=Yrsa:700');
+
     canvas {
       width: 100vw;
       height: 100vh;
@@ -15,6 +17,15 @@
       margin: 0;
       padding: 0;
       background: #000;
+      font-family: 'Yrsa', serif;
+    }
+
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 0;
+      width: 0;
     }
 
     button {
@@ -26,6 +37,13 @@
   </style>
 </head>
 <body>
+  <svg class="hiya" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 0 0">
+    <clipPath id="text">
+      <text y="500px" font-size="500">
+        Hiya
+      </text>
+    </clipPath>
+  </svg>
   <div id="target"></div>
   <button>dispatch</button>
 </body>
