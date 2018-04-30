@@ -8,7 +8,7 @@ uniform vec2 uPointFour;
 
 varying vec2 vUv;
 
-# define THRESH 0.6
+# define THRESH 0.335
 
 float random(vec2 c){
   return fract(sin(dot( c.xy, vec2(12.9898,78.233))) * 43758.5453);
