@@ -1,0 +1,37 @@
+function initGraphics() {
+  container = document.getElementById( 'container' );
+  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.2, 2000 );
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color( 0xbfd1e5 );
+  camera.position.set( -7, 5, 8 );
+  controls = new THREE.OrbitControls( camera );
+  controls.target.set( 0, 2, 0 );
+  controls.update();
+  renderer = new THREE.WebGLRenderer();
+  renderer.setPixelRatio( window.devicePixelRatio );
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.shadowMap.enabled = true;
+  textureLoader = new THREE.TextureLoader();
+  var ambientLight = new THREE.AmbientLight( 0x404040 );
+  scene.add( ambientLight );
+  var light = new THREE.DirectionalLight( 0xffffff, 1 );
+  light.position.set( -10, 10, 5 );
+  light.castShadow = true;
+  var d = 20;
+  light.shadow.camera.left = -d;
+  light.shadow.camera.right = d;
+  light.shadow.camera.top = d;
+  light.shadow.camera.bottom = -d;
+  light.shadow.camera.near = 2;
+  light.shadow.camera.far = 50;
+  light.shadow.mapSize.x = 1024;
+  light.shadow.mapSize.y = 1024;
+  scene.add( light );
+  container.innerHTML = '';
+  container.appendChild( renderer.domElement );
+  stats = new Stats();
+  stats.domElement.style.position = 'absolute';
+  stats.domElement.style.top = '0px';
+  container.appendChild( stats.domElement );
+  window.addEventListener( 'resize', onWindowResize, false );
+}

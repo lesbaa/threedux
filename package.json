@@ -22,6 +22,7 @@
     "@babel/preset-stage-0": "^7.0.0-beta.40",
     "@babel/preset-stage-3": "^7.0.0-beta.40",
     "@babel/runtime": "^7.0.0-beta.40",
+    "ammonext": "0.0.3",
     "babel": "^6.23.0",
     "babel-eslint": "^8.2.2",
     "babel-loader": "^8.0.0-beta.2",
