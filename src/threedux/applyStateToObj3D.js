@@ -64,7 +64,7 @@ export default function applyStateToObj3D({
 
     for (const dimension in state[prop]) {
       if (!obj3D[prop]) continue
-      obj3D[prop][dimension] = state[prop][dimension]
+      if (state[prop][dimension]) obj3D[prop][dimension] = state[prop][dimension]
     }
   }
 }

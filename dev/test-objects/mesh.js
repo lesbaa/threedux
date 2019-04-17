@@ -17,15 +17,15 @@ import {
   decrementAction,
 } from '../actions'
 import withEvents from '../../src/modules/with-events'
-import connectedMaterial from './gloop-material'
+import connectedMaterial from './palantir-material'
 import {
   scene,
   renderer,
   camera,
 } from '../../src/modules/set-up-three'
 
-// const geom = new SphereGeometry(2,32,32)
-const geom = new CubeGeometry(2,2,2)
+// const geom = new SphereGeometry(0.5,32,32)
+const geom = new CubeGeometry(0.5, 0.5, 0.5)
 // geom.faces.forEach(face => {
 //   const randomX = (Math.random() - 0.5) / 50.0
 //   const randomY = (Math.random() - 0.5) / 50.0
@@ -49,7 +49,7 @@ const mesh = new Mesh(
   connectedMaterial,
 )
 
-mesh.rotation.y = Math.PI / -2;
+mesh.rotation.y = Math.PI / -2
 
 // new MeshBasicMaterial({
 //   map: new TextureLoader().load('./assets/cube-map.png'),
@@ -98,10 +98,6 @@ enhancedMesh.classList.add(
       transitionEasingFunction: 'elasticOut',
       transitionDuration: 1000,
     },
-    // animation: (o,t) => {
-    //   o.geometry.rotateX(Math.sin(t / 2000) / 20.0)
-    //   o.geometry.rotateY(Math.cos(t / 2000) / 20.0)
-    // },
     position: {
       x: 0,
       y: 0,
@@ -113,8 +109,9 @@ enhancedMesh.classList.add(
 function mapStateToObj3D ({
   value,
 }, obj3d) {
-  return {
-  }
+  obj3d.setState({
+    rotation: { x: value, y: value },
+  })
 }
 
 function mapDispatchToObj3D (dispatch) {

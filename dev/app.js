@@ -38,8 +38,7 @@ class App {
     this.initStats()
     this.addLights()
 
-    this.mesh = mesh
-
+    window.mesh = this.mesh = mesh
     this.camera.position.z = 2
     this.camera.lookAt(new Vector3(0,0,0))
 
@@ -94,7 +93,7 @@ class App {
 
   loop = (t) => {
     this.mesh.tick(t)
-    this.mesh.material.tick(t)
+    // this.mesh.material.tick(t)
     // this.camera.position.x = Math.sin(t / 2000)
     // this.camera.position.y = Math.cos(t / 2000)
     // this.camera.lookAt(new Vector3(0,0,0))
