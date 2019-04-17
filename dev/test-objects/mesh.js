@@ -111,6 +111,7 @@ function mapStateToObj3D ({
 }, obj3d) {
   obj3d.setState({
     rotation: { x: value, y: value },
+    scale: { x: value, y: value, z: value },
   })
 }
 
