@@ -16,6 +16,7 @@ const withEvents = ({
   scene,
 }) => obj => {
   const obj3D = obj.clone()
+  // i don't think you need to return this or even use it
   if (!canvas.isEventful) {
     const vMousePos = new Vector2()
     const raycaster = new Raycaster()
@@ -68,7 +69,6 @@ const withEvents = ({
       vMousePos.x = (clientX / window.innerWidth) * 2 - 1
       vMousePos.y = ((window.innerHeight - clientY) / window.innerHeight) * 2 - 1
       const target = getIntersectObject(vMousePos, camera)
-
       if (target) {
         target.dispatchEvent({
           type: 'click',
@@ -79,7 +79,7 @@ const withEvents = ({
 
     function getIntersectObject(vec, cam) {
       raycaster.setFromCamera(vec, cam)
-      const [ intersect ] = raycaster.intersectObjects(scene.children)
+      const [ intersect ] = raycaster.intersectObjects(scene.children, true)
       return intersect && intersect.object
     }
   }

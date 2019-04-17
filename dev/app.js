@@ -32,8 +32,6 @@ class App {
   }
 
   init = () => {
-    const button = document.querySelector('button')
-    button.addEventListener('click', this.handleButtonClick)
     this.scene = applyCubeMap(this.scene, './assets/cube-map.png')
     this.initStats()
     this.addLights()
@@ -63,6 +61,7 @@ class App {
     this.style = new Style3D({
       transition: {
         transitionEasingFunction: 'linear',
+        position: { x: 2, y: 2, z: 2 },
       },
     })
 
@@ -77,10 +76,6 @@ class App {
     )
   }
 
-  handleButtonClick = () => {
-    this.mesh.classList.toggle(this.style)
-  }
-
   addLights = () => {
     this.light = new PointLight( 0xffffff, 1, 100 )
     this.light.position.set( 2, 2, 2 )
@@ -93,7 +88,7 @@ class App {
 
   loop = (t) => {
     this.mesh.tick(t)
-    // this.mesh.material.tick(t)
+    this.mesh.material.tick(t)
     // this.camera.position.x = Math.sin(t / 2000)
     // this.camera.position.y = Math.cos(t / 2000)
     // this.camera.lookAt(new Vector3(0,0,0))

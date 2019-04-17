@@ -1,6 +1,5 @@
 import {
   CubeGeometry,
-  SphereGeometry,
   MeshStandardMaterial,
   Mesh,
 } from 'three'
@@ -24,7 +23,6 @@ import {
   camera,
 } from '../../src/modules/set-up-three'
 
-// const geom = new SphereGeometry(0.5,32,32)
 const geom = new CubeGeometry(0.5, 0.5, 0.5)
 // geom.faces.forEach(face => {
 //   const randomX = (Math.random() - 0.5) / 50.0
